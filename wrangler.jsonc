@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "speech-to-text-telegram",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-08-01",
+  "vars": {
+    "DAILY_LIMIT": "20"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
