@@ -5,51 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>بات رایگان تبدیل ویس به متن تلگرام | Free Telegram Voice-to-Text Bot</title>
 <style>
-:root { --fg:#111; --muted:#666; --line:#e5e5e5; --accent:#f97316; --bg:#fff; }
+:root { --fg:#111; --body:#222; --muted:#555; --line:#e0e0e0; --accent:#f97316; --bg:#fff; }
 * { box-sizing:border-box; margin:0; padding:0; }
-body { font-family:Vazirmatn,"Segoe UI",Tahoma,Arial,sans-serif; background:var(--bg); color:var(--fg); line-height:1.8; }
+body { font-family:Vazirmatn,"Segoe UI",Tahoma,Arial,sans-serif; background:var(--bg); color:var(--body); line-height:1.9; font-size:16px; }
 a { color:var(--fg); text-decoration:underline; text-underline-offset:3px; }
-.topbar { display:flex; justify-content:space-between; align-items:center; max-width:640px; margin:0 auto; padding:20px 20px 0; }
-.topbar .logo { font-weight:700; font-size:17px; }
-#langToggle { background:none; border:1px solid var(--line); color:var(--fg); padding:5px 14px; border-radius:999px; cursor:pointer; font-size:13px; font-family:inherit; }
-main { max-width:640px; margin:0 auto; padding:8px 20px 70px; }
-.hero { text-align:center; padding:46px 10px 34px; }
-.hero .badge { display:inline-block; font-size:12.5px; color:var(--muted); margin-bottom:14px; }
-.hero h1 { font-size:clamp(24px,5vw,36px); font-weight:800; line-height:1.4; margin-bottom:10px; }
-.hero p.sub { font-size:15px; color:var(--muted); max-width:520px; margin:0 auto 24px; }
-.deploy-btn { display:inline-block; background:var(--accent); color:#fff !important; font-weight:700; font-size:16px; padding:12px 30px; border-radius:999px; text-decoration:none; }
-.deploy-btn:hover { opacity:.9; }
-.hero .meta { margin-top:12px; font-size:12.5px; color:var(--muted); }
+.topbar { display:flex; justify-content:space-between; align-items:center; max-width:680px; margin:0 auto; padding:24px 24px 0; }
+.topbar .logo { font-weight:800; font-size:19px; }
+#langToggle { background:none; border:1.5px solid var(--line); color:var(--fg); padding:7px 18px; border-radius:999px; cursor:pointer; font-size:15px; font-family:inherit; }
+main { max-width:680px; margin:0 auto; padding:10px 24px 80px; }
+.hero { text-align:center; padding:52px 10px 40px; }
+.hero .badge { display:inline-block; font-size:14px; color:var(--muted); margin-bottom:16px; }
+.hero h1 { font-size:clamp(26px,5vw,40px); font-weight:800; line-height:1.5; margin-bottom:12px; }
+.hero p.sub { font-size:17px; color:var(--muted); max-width:540px; margin:0 auto 28px; }
+.deploy-btn { display:inline-block; background:var(--accent); color:#fff !important; font-weight:700; font-size:18px; padding:15px 38px; border-radius:999px; text-decoration:none; }
+.deploy-btn:hover { opacity:.88; }
+.hero .meta { margin-top:14px; font-size:14px; color:var(--muted); }
 
-h2 { font-size:18px; margin:44px 0 6px; }
+h2 { font-size:21px; margin:52px 0 8px; font-weight:800; }
 
 .steps { counter-reset:step; }
-.step { padding:18px 0; border-bottom:1px solid var(--line); }
+.step { padding:22px 0; border-bottom:1px solid var(--line); }
 .step:last-child { border-bottom:none; }
-.step h3 { font-size:16px; margin-bottom:6px; counter-increment:step; }
+.step h3 { font-size:18px; font-weight:700; margin-bottom:8px; counter-increment:step; }
 .step h3::before { content:counter(step) ". "; color:var(--accent); font-weight:800; }
 .step ol { list-style:none; }
-.step li { padding:2px 0; color:#333; font-size:14.5px; }
-.step code { background:#f2f2f2; padding:1px 6px; border-radius:5px; font-size:13px; word-break:break-all; }
-.step .tip { display:block; margin-top:8px; font-size:12.5px; color:var(--muted); }
+.step li { padding:3px 0; color:var(--body); font-size:16px; }
+.step code { background:#f0f0f0; padding:2px 8px; border-radius:6px; font-size:14.5px; word-break:break-all; }
+.step .tip { display:block; margin-top:10px; font-size:14px; color:var(--muted); }
 
-.how p { font-size:14.5px; color:#333; }
-.how .flow { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:10px 0; font-size:14px; color:#333; }
-.how .flow span { background:#f2f2f2; padding:4px 12px; border-radius:8px; }
-.how .flow .arrow { background:none; color:var(--accent); padding:0; font-weight:700; }
+.how p { font-size:16px; color:var(--body); }
+.how .flow { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:12px 0; font-size:15.5px; color:var(--body); }
+.how .flow span { background:#f0f0f0; padding:5px 14px; border-radius:8px; }
+.how .flow .arrow { background:none; color:var(--accent); padding:0; font-weight:800; }
 
-.limits { display:flex; flex-wrap:wrap; justify-content:space-between; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:16px 0; margin-top:10px; }
-.limit { text-align:center; flex:1; min-width:150px; padding:6px 10px; }
-.limit .n { font-size:22px; font-weight:800; color:var(--accent); }
-.limit .l { font-size:12px; color:var(--muted); }
+.limits { display:flex; flex-wrap:wrap; justify-content:space-between; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:18px 0; margin-top:12px; }
+.limit { text-align:center; flex:1; min-width:160px; padding:8px 10px; }
+.limit .n { font-size:26px; font-weight:800; color:var(--accent); }
+.limit .l { font-size:13.5px; color:var(--muted); }
 
-.faq { margin-top:10px; }
-details { padding:13px 0; border-bottom:1px solid var(--line); }
+.faq { margin-top:12px; }
+details { padding:16px 0; border-bottom:1px solid var(--line); }
 details:last-child { border-bottom:none; }
-summary { cursor:pointer; font-weight:600; font-size:14.5px; }
-details p { margin-top:6px; color:#333; font-size:14px; }
+summary { cursor:pointer; font-weight:700; font-size:16px; }
+details p { margin-top:8px; color:var(--body); font-size:15.5px; }
 
-footer { text-align:center; padding:26px 20px 40px; color:var(--muted); font-size:12.5px; border-top:1px solid var(--line); }
+footer { text-align:center; padding:30px 24px 44px; color:var(--muted); font-size:14px; border-top:1px solid var(--line); }
 </style>
 </head>
 <body>
@@ -130,23 +130,23 @@ footer { text-align:center; padding:26px 20px 40px; color:var(--muted); font-siz
     <h3 class="fa">بات را فقط برای خودت کن</h3>
     <h3 class="en">Lock the bot to yourself</h3>
     <ol class="fa">
-      <li>آدرس وورکر را یک بار در مرورگر باز کن — وب‌هوک خودکار ثبت می‌شود</li>
       <li>بات را در تلگرام باز کن</li>
-      <li>دستور <code>/claim</code> را بفرست — از این به بعد فقط تو می‌توانی استفاده کنی</li>
+      <li>دستور <code>/claim</code> را بفرست</li>
+      <li>تا یک دقیقه دیگر جواب می‌دهد و بات فقط برای تو می‌شود 🎉</li>
     </ol>
     <ol class="en">
-      <li>Open your worker URL once in a browser — the webhook registers automatically</li>
       <li>Open the bot in Telegram</li>
-      <li>Send <code>/claim</code> — from now on, only you can use it</li>
+      <li>Send <code>/claim</code></li>
+      <li>It replies within a minute and the bot is yours 🎉</li>
     </ol>
-    <span class="tip fa">💡 اگر کس دیگری زودتر /claim زد، از صفحه وورکر خودت «بازنشانی» را بزن.</span>
-    <span class="tip en">💡 If someone else claimed it first, hit "Reset" on your worker page.</span>
+    <span class="tip fa">💡 بدون نیاز به مرورگر. اگر کس دیگری زودتر /claim زد، از صفحه وورکر خودت «بازنشانی» را بزن.</span>
+    <span class="tip en">💡 No browser needed. If someone else claimed it first, hit "Reset" on your worker page.</span>
   </div>
 
 </div>
 
-<p style="text-align:center; margin-top:26px; color:var(--muted); font-size:14px;" class="fa">🎉 تمام شد! حالا یک ویس بفرست و متنش را تحویل بگیر.</p>
-<p style="text-align:center; margin-top:26px; color:var(--muted); font-size:14px;" class="en">🎉 Done! Send a voice message and get the text back.</p>
+<p style="text-align:center; margin-top:30px; color:var(--muted); font-size:16px;" class="fa">🎉 تمام شد! حالا یک ویس بفرست و متنش را تحویل بگیر.</p>
+<p style="text-align:center; margin-top:30px; color:var(--muted); font-size:16px;" class="en">🎉 Done! Send a voice message and get the text back.</p>
 
 <h2 class="fa">چطور کار می‌کند؟</h2>
 <h2 class="en">How it works</h2>
@@ -174,9 +174,9 @@ footer { text-align:center; padding:26px 20px 40px; color:var(--muted); font-siz
 <div class="faq">
 
   <details>
-    <summary class="fa">بات اصلاً جواب نمی‌دهد. چه کار کنم؟</summary>
-    <p class="fa">آدرس وورکر خودت را یک بار در مرورگر باز کن — وب‌هوک به‌صورت خودکار ثبت می‌شود و صفحه وضعیت باید همه موارد را ✅ نشان دهد. اگر چیزی ❌ بود، همان مقدار را در <code>Settings → Variables and Secrets</code> اضافه کن.</p>
-    <p class="en">Open your worker URL once in a browser — the webhook registers automatically and the status page should show ✅ for everything. If something is ❌, add it under <code>Settings → Variables and Secrets</code>.</p>
+    <summary class="fa">بات جواب نمی‌دهد. چه کار کنم؟</summary>
+    <p class="fa">تا یک دقیقه صبر کن — بات هر دقیقه پیام‌ها را چک می‌کند و خودش جواب می‌دهد. اگر بعد از یک دقیقه هم جواب نداد، آدرس وورکرت را یک بار در مرورگر باز کن تا وب‌هوک ثبت شود و صفحه وضعیت را ببین؛ اگر چیزی ❌ بود، همان مقدار را در <code>Settings → Variables and Secrets</code> اضافه کن.</p>
+    <p class="en">Wait up to a minute — the bot checks for messages every minute and replies on its own. If it still doesn't answer, open your worker URL once in a browser to register the webhook and check the status page; if something is ❌, add it under <code>Settings → Variables and Secrets</code>.</p>
   </details>
 
   <details>

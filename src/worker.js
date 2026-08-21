@@ -7,10 +7,17 @@
  * Deploy it with the Deploy-to-Cloudflare button, with `wrangler deploy`,
  * or by copy-pasting this file into the Cloudflare dashboard editor.
  *
- * Setup (the easy way — no dashboard editing):
+ * Setup (the easy way — no browser, no dashboard editing):
  *   1. Set BOT_TOKEN + GEMINI_API_KEY (prompted by the Deploy button wizard).
- *   2. Open the worker URL once in a browser → webhook auto-registers.
- *   3. In Telegram, send /claim to your bot → the bot locks itself to you.
+ *   2. In Telegram, send /claim to your bot. A cron job polls for updates
+ *      every minute, so the bot answers on its own within ~60 seconds.
+ *   3. (Optional, instant replies) Open the worker URL once in a browser —
+ *      the webhook registers automatically.
+ *
+ * Polling fallback: while the webhook is not registered yet, a scheduled
+ * trigger calls getUpdates every minute and processes updates like a webhook.
+ * Once the webhook is registered (via the status page or any webhook POST),
+ * polling stops automatically.
  *
  * Env / vars (Settings → Variables and Secrets):
  *   BOT_TOKEN         Telegram bot token from @BotFather (required)
@@ -85,7 +92,30 @@ export default {
     if (request.method === 'POST') return handlePost(request, env, ctx);
     return new Response('Method not allowed', { status: 405 });
   },
+  async scheduled(event, env, ctx) {
+    return pollUpdates(env);
+  },
 };
+
+async function pollUpdates(env) {
+  if (!env.BOT_TOKEN || !env.OWNER_STORE) return;
+  const kv = env.OWNER_STORE;
+  if (await kv.get('webhookOk')) return;
+  const offset = parseInt((await kv.get('upOffset')) || '0', 10);
+  const r = await tg('getUpdates', env.BOT_TOKEN, {
+    offset,
+    limit: 20,
+    timeout: 0,
+  });
+  if (!r?.ok) {
+    if (r?.error_code === 409) await kv.put('webhookOk', '1');
+    return;
+  }
+  for (const update of r.result || []) {
+    await processUpdate(update, env);
+    await kv.put('upOffset', String(update.update_id + 1));
+  }
+}
 
 async function handlePost(request, env, ctx) {
   if (!env.BOT_TOKEN) return json({ ok: false }, 500);
@@ -131,6 +161,7 @@ async function handleGet(request, env) {
     webhook = r?.ok
       ? '<span style="color:#22c55e">✅ ثبت شد → ' + webhookUrl + '</span>'
       : '<span style="color:#ef4444">❌ ' + (r?.description || 'failed') + '</span>';
+    if (r?.ok && kv) await kv.put('webhookOk', '1');
   }
   const rows = checks
     .map(
