@@ -1,8 +1,9 @@
 # Copy this file to .dev.vars and fill in values for local development.
-# In production (Cloudflare), set these as secrets/vars in the dashboard instead.
+# In production (Cloudflare), the Deploy button wizard prompts for these values;
+# the OWNER_STORE KV namespace is provisioned automatically.
 BOT_TOKEN=123456:ABC-your-telegram-bot-token
 GEMINI_API_KEY=AIza-your-google-ai-studio-key
-# ALLOWED_CHAT_ID=123456789,987654321
 # PUBLIC_BOT=false
 # DAILY_LIMIT=20
 # GEMINI_MODEL=gemini-2.5-flash-lite
+# ALLOWED_CHAT_ID=123456789,987654321 (fallback only when OWNER_STORE KV is missing)

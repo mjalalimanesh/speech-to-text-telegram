@@ -5,61 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>بات رایگان تبدیل ویس به متن تلگرام | Free Telegram Voice-to-Text Bot</title>
 <style>
-:root {
-  --tg-blue: #2aabee;
-  --bg: #0f172a;
-  --card: #ffffff;
-  --text: #0f172a;
-  --muted: #64748b;
-  --accent: #2563eb;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: Vazirmatn, "Segoe UI", Tahoma, Arial, sans-serif; background: var(--bg); color: #e2e8f0; line-height: 1.8; }
-a { color: var(--tg-blue); text-decoration: none; }
-a:hover { text-decoration: underline; }
+:root { --fg:#111; --muted:#666; --line:#e5e5e5; --accent:#f97316; --bg:#fff; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:Vazirmatn,"Segoe UI",Tahoma,Arial,sans-serif; background:var(--bg); color:var(--fg); line-height:1.8; }
+a { color:var(--fg); text-decoration:underline; text-underline-offset:3px; }
+.topbar { display:flex; justify-content:space-between; align-items:center; max-width:640px; margin:0 auto; padding:20px 20px 0; }
+.topbar .logo { font-weight:700; font-size:17px; }
+#langToggle { background:none; border:1px solid var(--line); color:var(--fg); padding:5px 14px; border-radius:999px; cursor:pointer; font-size:13px; font-family:inherit; }
+main { max-width:640px; margin:0 auto; padding:8px 20px 70px; }
+.hero { text-align:center; padding:46px 10px 34px; }
+.hero .badge { display:inline-block; font-size:12.5px; color:var(--muted); margin-bottom:14px; }
+.hero h1 { font-size:clamp(24px,5vw,36px); font-weight:800; line-height:1.4; margin-bottom:10px; }
+.hero p.sub { font-size:15px; color:var(--muted); max-width:520px; margin:0 auto 24px; }
+.deploy-btn { display:inline-block; background:var(--accent); color:#fff !important; font-weight:700; font-size:16px; padding:12px 30px; border-radius:999px; text-decoration:none; }
+.deploy-btn:hover { opacity:.9; }
+.hero .meta { margin-top:12px; font-size:12.5px; color:var(--muted); }
 
-.hero { text-align: center; padding: 56px 20px 48px; background: radial-gradient(ellipse at top, #1e3a5f 0%, var(--bg) 70%); }
-.hero .badge { display: inline-block; background: rgba(42,171,238,.12); color: var(--tg-blue); border: 1px solid rgba(42,171,238,.35); padding: 4px 14px; border-radius: 999px; font-size: 13px; margin-bottom: 18px; }
-.hero h1 { font-size: clamp(26px, 5vw, 42px); font-weight: 800; margin-bottom: 12px; }
-.hero p.sub { font-size: clamp(15px, 3vw, 18px); color: #94a3b8; max-width: 640px; margin: 0 auto 28px; }
-.deploy-btn { display: inline-block; background: linear-gradient(135deg, #f97316, #ea580c); color: #fff !important; font-weight: 700; font-size: 17px; padding: 14px 34px; border-radius: 14px; box-shadow: 0 8px 24px rgba(234,88,12,.35); transition: transform .15s; }
-.deploy-btn:hover { transform: translateY(-2px); text-decoration: none; }
-.hero .meta { margin-top: 14px; font-size: 13px; color: #64748b; }
+h2 { font-size:18px; margin:44px 0 6px; }
 
-.topbar { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; }
-.topbar .logo { font-weight: 800; color: var(--tg-blue); font-size: 18px; }
-#langToggle { background: rgba(255,255,255,.08); color: #e2e8f0; border: 1px solid #334155; padding: 6px 16px; border-radius: 999px; cursor: pointer; font-size: 14px; font-family: inherit; }
+.steps { counter-reset:step; }
+.step { padding:18px 0; border-bottom:1px solid var(--line); }
+.step:last-child { border-bottom:none; }
+.step h3 { font-size:16px; margin-bottom:6px; counter-increment:step; }
+.step h3::before { content:counter(step) ". "; color:var(--accent); font-weight:800; }
+.step ol { list-style:none; }
+.step li { padding:2px 0; color:#333; font-size:14.5px; }
+.step code { background:#f2f2f2; padding:1px 6px; border-radius:5px; font-size:13px; word-break:break-all; }
+.step .tip { display:block; margin-top:8px; font-size:12.5px; color:var(--muted); }
 
-main { max-width: 900px; margin: 0 auto; padding: 0 20px 60px; }
-h2 { font-size: 24px; margin: 48px 0 20px; text-align: center; }
+.how p { font-size:14.5px; color:#333; }
+.how .flow { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:10px 0; font-size:14px; color:#333; }
+.how .flow span { background:#f2f2f2; padding:4px 12px; border-radius:8px; }
+.how .flow .arrow { background:none; color:var(--accent); padding:0; font-weight:700; }
 
-.steps { display: grid; gap: 16px; grid-template-columns: 1fr; }
-@media (min-width: 720px) { .steps { grid-template-columns: repeat(2, 1fr); } }
-.step { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 22px; position: relative; }
-.step .num { position: absolute; top: -12px; inset-inline-start: 18px; background: var(--tg-blue); color: #fff; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; }
-.step h3 { margin: 8px 0 10px; font-size: 17px; }
-.step p, .step li { color: #cbd5e1; font-size: 14.5px; }
-.step ol { padding-inline-start: 22px; }
-.step code { background: #0f172a; color: #7dd3fc; padding: 1px 7px; border-radius: 6px; font-size: 13px; word-break: break-all; }
-.step .tip { display: block; margin-top: 10px; font-size: 13px; color: #94a3b8; }
+.limits { display:flex; flex-wrap:wrap; justify-content:space-between; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:16px 0; margin-top:10px; }
+.limit { text-align:center; flex:1; min-width:150px; padding:6px 10px; }
+.limit .n { font-size:22px; font-weight:800; color:var(--accent); }
+.limit .l { font-size:12px; color:var(--muted); }
 
-.how { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 22px 26px; }
-.how .flow { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 14px 0; font-size: 14px; color: #cbd5e1; }
-.how .flow span { background: #0f172a; border: 1px solid #334155; padding: 6px 14px; border-radius: 10px; }
-.how .arrow { color: var(--tg-blue); }
+.faq { margin-top:10px; }
+details { padding:13px 0; border-bottom:1px solid var(--line); }
+details:last-child { border-bottom:none; }
+summary { cursor:pointer; font-weight:600; font-size:14.5px; }
+details p { margin-top:6px; color:#333; font-size:14px; }
 
-.faq { display: grid; gap: 12px; }
-details { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 14px 18px; }
-summary { cursor: pointer; font-weight: 600; color: #e2e8f0; }
-details p { margin-top: 8px; color: #cbd5e1; font-size: 14.5px; }
-
-.limits { display: grid; gap: 12px; grid-template-columns: 1fr; }
-@media (min-width: 720px) { .limits { grid-template-columns: repeat(3, 1fr); } }
-.limit { background: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 18px; text-align: center; }
-.limit .n { font-size: 26px; font-weight: 800; color: var(--tg-blue); }
-.limit .l { font-size: 13px; color: #94a3b8; }
-
-footer { text-align: center; padding: 30px 20px 40px; color: #64748b; font-size: 13px; border-top: 1px solid #1e293b; }
+footer { text-align:center; padding:26px 20px 40px; color:var(--muted); font-size:12.5px; border-top:1px solid var(--line); }
 </style>
 </head>
 <body>
@@ -70,16 +60,16 @@ footer { text-align: center; padding: 30px 20px 40px; color: #64748b; font-size:
 </div>
 
 <header class="hero">
-  <span class="badge fa">۱۰۰٪ رایگان · بدون سرور · بدون کارت اعتباری</span>
-  <span class="badge en">100% free · No server · No credit card</span>
+  <div class="badge fa">۱۰۰٪ رایگان · بدون سرور · بدون کارت اعتباری</div>
+  <div class="badge en">100% free · No server · No credit card</div>
   <h1 class="fa">بات تبدیل ویس به متن تلگرام، مخصوص خودت</h1>
   <h1 class="en">Your Own Free Telegram Voice-to-Text Bot</h1>
   <p class="sub fa">در ۱۰ دقیقه با سهمیه رایگان Google AI Studio یک بات بساز که ویس‌ها را برایت متن می‌کند — رایگان و برای همیشه.</p>
   <p class="sub en">Build a bot in 10 minutes using Google's free AI Studio quota — transcribes your voice notes to text, free forever.</p>
-  <a class="deploy-btn fa" href="https://deploy.workers.cloudflare.com/?url=https://github.com/mjalalimanesh/speech-to-text-telegram">🚀 همین حالا بسازش — Deploy</a>
+  <a class="deploy-btn fa" href="https://deploy.workers.cloudflare.com/?url=https://github.com/mjalalimanesh/speech-to-text-telegram">🚀 همین حالا بسازش</a>
   <a class="deploy-btn en" href="https://deploy.workers.cloudflare.com/?url=https://github.com/mjalalimanesh/speech-to-text-telegram">🚀 Deploy Your Own — Free</a>
-  <div class="meta fa">میزبانی رایگان Cloudflare · دیلی کووتای رایگان گوگل · حریم خصوصی کامل (بات فقط برای تو)</div>
-  <div class="meta en">Free Cloudflare hosting · Google's free daily quota · Fully private (just for you)</div>
+  <div class="meta fa">میزبانی رایگان Cloudflare · دیلی کووتای رایگان گوگل · حریم خصوصی کامل</div>
+  <div class="meta en">Free Cloudflare hosting · Google's free daily quota · Fully private</div>
 </header>
 
 <main>
@@ -90,7 +80,6 @@ footer { text-align: center; padding: 30px 20px 40px; color: #64748b; font-size:
 <div class="steps">
 
   <div class="step">
-    <span class="num">1</span>
     <h3 class="fa">توکن بات را بگیر</h3>
     <h3 class="en">Get a bot token</h3>
     <ol class="fa">
@@ -106,27 +95,27 @@ footer { text-align: center; padding: 30px 20px 40px; color: #64748b; font-size:
   </div>
 
   <div class="step">
-    <span class="num">2</span>
     <h3 class="fa">کلید رایگان Gemini را بساز</h3>
     <h3 class="en">Create a free Gemini key</h3>
     <ol class="fa">
       <li>وارد <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> شو</li>
       <li>روی <code>Create API key</code> بزن</li>
-      <li>کلید را کپی کن — هیچ هزینه‌ای ندارد، سهمیه رایگان هر روز پر می‌شود</li>
+      <li>کلید را کپی کن — سهمیه رایگان هر روز پر می‌شود</li>
     </ol>
     <ol class="en">
       <li>Open <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a></li>
       <li>Click <code>Create API key</code></li>
-      <li>Copy it — it's free, and the free daily quota refills every day</li>
+      <li>Copy it — the free daily quota refills every day</li>
     </ol>
+    <span class="tip fa">⚠️ اگر صفحه کلید ۴۰۳ یا «Access denied» داد، از یک VPN قوی‌تر استفاده کنید.</span>
+    <span class="tip en">⚠️ If the page shows 403 / "Access denied", use a stronger VPN.</span>
   </div>
 
   <div class="step">
-    <span class="num">3</span>
     <h3 class="fa">با یک کلیک Deploy کن</h3>
     <h3 class="en">Deploy with one click</h3>
     <ol class="fa">
-      <li>روی دکمه آبی «Deploy» بالای صفحه بزن</li>
+      <li>روی دکمه نارنجی «Deploy» بالای صفحه بزن</li>
       <li>اکانت رایگان Cloudflare و GitHub را متصل کن</li>
       <li>وقتی خواست، این دو مقدار را بگذار: <code>BOT_TOKEN</code> و <code>GEMINI_API_KEY</code></li>
     </ol>
@@ -138,25 +127,26 @@ footer { text-align: center; padding: 30px 20px 40px; color: #64748b; font-size:
   </div>
 
   <div class="step">
-    <span class="num">4</span>
-    <h3 class="fa">بات را به خودت قفل کن</h3>
+    <h3 class="fa">بات را فقط برای خودت کن</h3>
     <h3 class="en">Lock the bot to yourself</h3>
     <ol class="fa">
-      <li>بعد از Deploy، آدرس وورکر را یک بار در مرورگر باز کن تا وب‌هوک ثبت شود</li>
-      <li>بات را در تلگرام باز کن و هر پیامی بفرست — شناسه چت تو را می‌گوید</li>
-      <li>در Cloudflare → کارگر خودت → <code>Settings → Variables and Secrets</code> مقدار <code>ALLOWED_CHAT_ID</code> را اضافه کن</li>
+      <li>آدرس وورکر را یک بار در مرورگر باز کن — وب‌هوک خودکار ثبت می‌شود</li>
+      <li>بات را در تلگرام باز کن</li>
+      <li>دستور <code>/claim</code> را بفرست — از این به بعد فقط تو می‌توانی استفاده کنی</li>
     </ol>
     <ol class="en">
-      <li>After deploying, open your worker URL once in a browser (registers the webhook)</li>
-      <li>Open the bot in Telegram and send any message — it replies with your chat ID</li>
-      <li>In Cloudflare → your worker → <code>Settings → Variables and Secrets</code>, add <code>ALLOWED_CHAT_ID</code></li>
+      <li>Open your worker URL once in a browser — the webhook registers automatically</li>
+      <li>Open the bot in Telegram</li>
+      <li>Send <code>/claim</code> — from now on, only you can use it</li>
     </ol>
+    <span class="tip fa">💡 اگر کس دیگری زودتر /claim زد، از صفحه وورکر خودت «بازنشانی» را بزن.</span>
+    <span class="tip en">💡 If someone else claimed it first, hit "Reset" on your worker page.</span>
   </div>
 
 </div>
 
-<p style="text-align:center; margin-top:26px; font-size:15px; color:#94a3b8;" class="fa">🎉 تمام شد! حالا یک ویس بفرست و متنش را تحویل بگیر.</p>
-<p style="text-align:center; margin-top:26px; font-size:15px; color:#94a3b8;" class="en">🎉 Done! Send a voice message and get the text back.</p>
+<p style="text-align:center; margin-top:26px; color:var(--muted); font-size:14px;" class="fa">🎉 تمام شد! حالا یک ویس بفرست و متنش را تحویل بگیر.</p>
+<p style="text-align:center; margin-top:26px; color:var(--muted); font-size:14px;" class="en">🎉 Done! Send a voice message and get the text back.</p>
 
 <h2 class="fa">چطور کار می‌کند؟</h2>
 <h2 class="en">How it works</h2>
@@ -167,8 +157,8 @@ footer { text-align: center; padding: 30px 20px 40px; color: #64748b; font-size:
   <div class="flow en">
     <span>🎙️ Your voice</span><span class="arrow">→</span><span>☁️ Free Cloudflare Worker</span><span class="arrow">→</span><span>🧠 Google Gemini</span><span class="arrow">→</span><span>📝 Text</span>
   </div>
-  <p class="fa" style="font-size:14px; color:#94a3b8;">صدا هرگز روی سرور ذخیره نمی‌شود؛ فقط برای لحظه‌ای به گوگل ارسال می‌شود تا متن شود و بلافاصله حذف می‌گردد.</p>
-  <p class="en" style="font-size:14px; color:#94a3b8;">Audio is never stored — it's sent to Google for a moment to get transcribed, then discarded.</p>
+  <p class="fa">صدا هرگز روی سرور ذخیره نمی‌شود؛ فقط برای لحظه‌ای به گوگل ارسال می‌شود تا متن شود و بلافاصله حذف می‌گردد.</p>
+  <p class="en">Audio is never stored — it's sent to Google for a moment to get transcribed, then discarded.</p>
 </div>
 
 <h2 class="fa">سهمیه‌های رایگان (چرا همیشه رایگان است)</h2>
@@ -185,20 +175,20 @@ footer { text-align: center; padding: 30px 20px 40px; color: #64748b; font-size:
 
   <details>
     <summary class="fa">بات اصلاً جواب نمی‌دهد. چه کار کنم؟</summary>
-    <p class="fa">آدرس وورکر خودت را یک بار در مرورگر باز کن — وب‌هوک به‌صورت خودکار ثبت می‌شود و صفحه وضعیت باید برای هر سه مورد ✅ نشان دهد. اگر چیزی ❌ بود، همان مقدار را در <code>Settings → Variables and Secrets</code> اضافه کن.</p>
-    <p class="en">Open your worker URL once in a browser — the webhook registers automatically and the status page should show ✅ for all three. If something is ❌, add it under <code>Settings → Variables and Secrets</code>.</p>
+    <p class="fa">آدرس وورکر خودت را یک بار در مرورگر باز کن — وب‌هوک به‌صورت خودکار ثبت می‌شود و صفحه وضعیت باید همه موارد را ✅ نشان دهد. اگر چیزی ❌ بود، همان مقدار را در <code>Settings → Variables and Secrets</code> اضافه کن.</p>
+    <p class="en">Open your worker URL once in a browser — the webhook registers automatically and the status page should show ✅ for everything. If something is ❌, add it under <code>Settings → Variables and Secrets</code>.</p>
   </details>
 
   <details>
-    <summary class="fa">چرا شناسه چت من چیز عجیبی است؟</summary>
-    <p class="fa">هر چت در تلگرام یک شماره یکتای عددی دارد؛ بات در حالت راه‌اندازی همان را برایت می‌نویسد. آن را بدون تغییر کپی کن.</p>
-    <p class="en">Every Telegram chat has a unique numeric ID. The bot prints yours in setup mode — copy it exactly.</p>
+    <summary class="fa">اگر شخص دیگری /claim بزند چه؟</summary>
+    <p class="fa">تا لحظه‌ای که کسی /claim نزده، اولین نفر صاحب بات می‌شود؛ پس بلافاصله بعد از Deploy این کار را بکن. اگر اشتباهی شد، صفحه وورکر خودت را باز کن و روی «بازنشانی» بزن تا صاحب پاک شود و دوباره /claim بفرستی.</p>
+    <p class="en">The first person to send /claim owns the bot — do it right after deploying. If someone claimed it by mistake, open your worker page and click "Reset" to clear the owner, then send /claim again.</p>
   </details>
 
   <details>
     <summary class="fa">چطور دیگران هم بتوانند استفاده کنند؟</summary>
-    <p class="fa">مقدار <code>ALLOWED_CHAT_ID</code> را با چند شناسه با ویرگول جدا کن، یا متغیر <code>PUBLIC_BOT</code> را روی <code>true</code> بگذار (توجه: سهمیه جمنای خودت مصرف می‌شود).</p>
-    <p class="en">Add more chat IDs to <code>ALLOWED_CHAT_ID</code> (comma-separated), or set <code>PUBLIC_BOT</code> to <code>true</code> (note: it uses your Gemini quota).</p>
+    <p class="fa">متغیر <code>PUBLIC_BOT</code> را روی <code>true</code> بگذار تا هر کسی بتواند استفاده کند (با سقف روزانه پیش‌فرض ۲۰ پیام برای هر چت). توجه: سهمیه جمنای خودت مصرف می‌شود.</p>
+    <p class="en">Set <code>PUBLIC_BOT</code> to <code>true</code> to let anyone use it (default daily cap of 20 messages per chat). Note: it uses your Gemini quota.</p>
   </details>
 
   <details>
@@ -209,8 +199,8 @@ footer { text-align: center; padding: 30px 20px 40px; color: #64748b; font-size:
 
   <details>
     <summary class="fa">در ایران بدون فیلترشکن کار می‌کند؟</summary>
-    <p class="fa">بدنه بات روی کلادفلر اجرا می‌شود و به گوگل از سمت کلادفلر متصل می‌شود، پس نیازی نیست شبکه تو مستقیماً به گوگل برسد. اگر دامنه <code>workers.dev</code> در شبکه تو مسدود بود، یک دامنه شخصی به وورکر وصل کن.</p>
-    <p class="en">The worker runs on Cloudflare and calls Google from Cloudflare's side, so your network doesn't touch Google directly. If <code>workers.dev</code> is blocked on your network, attach a custom domain to the worker.</p>
+    <p class="fa">بدنه بات روی کلادفلر اجرا می‌شود و به گوگل از سمت کلادفلر متصل می‌شود، پس نیازی نیست شبکه تو مستقیماً به گوگل برسد. اگر دامنه <code>workers.dev</code> در شبکه تو مسدود بود، یک دامنه شخصی به وورکر وصل کن. برای ساخت کلید در AI Studio اگر خطای ۴۰۳ یا «Access denied» دیدی، از یک VPN قوی‌تر استفاده کن.</p>
+    <p class="en">The worker runs on Cloudflare and calls Google from Cloudflare's side, so your network doesn't touch Google directly. If <code>workers.dev</code> is blocked on your network, attach a custom domain to the worker. If AI Studio shows 403 / "Access denied" when creating a key, use a stronger VPN.</p>
   </details>
 
 </div>

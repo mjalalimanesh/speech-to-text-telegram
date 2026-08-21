@@ -7,15 +7,24 @@
  * Deploy it with the Deploy-to-Cloudflare button, with `wrangler deploy`,
  * or by copy-pasting this file into the Cloudflare dashboard editor.
  *
- * Env / secrets (Settings → Variables and Secrets):
+ * Setup (the easy way — no dashboard editing):
+ *   1. Set BOT_TOKEN + GEMINI_API_KEY (prompted by the Deploy button wizard).
+ *   2. Open the worker URL once in a browser → webhook auto-registers.
+ *   3. In Telegram, send /claim to your bot → the bot locks itself to you.
+ *
+ * Env / vars (Settings → Variables and Secrets):
  *   BOT_TOKEN         Telegram bot token from @BotFather (required)
  *   GEMINI_API_KEY    Free API key from https://aistudio.google.com/apikey (required)
- *   ALLOWED_CHAT_ID   Comma-separated chat IDs allowed to use the bot (private mode)
  *   PUBLIC_BOT        "true" to let anyone use the bot (optional)
  *   DAILY_LIMIT       Per-chat daily cap in public mode, default 20 (optional)
  *   GEMINI_MODEL      Model name, default gemini-2.5-flash-lite (optional)
+ *   ALLOWED_CHAT_ID   Fallback access control when KV binding is unavailable
+ *                     (comma-separated chat IDs). Ignored if OWNER_STORE exists.
  *
- * Visit the worker URL once after deploying to auto-register the webhook.
+ * KV binding:
+ *   OWNER_STORE       Stores the bot owner's chat ID (auto-provisioned by the
+ *                     Deploy to Cloudflare button). Without it, the bot falls
+ *                     back to ALLOWED_CHAT_ID.
  */
 
 const I18N = {
@@ -25,10 +34,14 @@ const I18N = {
     missing: '⚠️ Missing: %s',
     notVoice:
       'Send me a <b>voice message</b> 🎙️ and I will transcribe it for free.',
+    noOwner:
+      '🚧 <b>This bot has no owner yet.</b>\n\nIf you just deployed it, send <code>/claim</code> to make it yours. Nobody else can use it until then.',
+    claimed:
+      '🎉 <b>You are now the owner!</b>\n\nSend me a voice message and I will transcribe it.',
+    alreadyOwner: 'You are already the owner. Send me a voice message 🎙️',
+    unauthorized: '⛔ You are not allowed to use this bot.',
     chatIdSetup:
       '🚧 <b>Setup required</b>\n\nYour chat ID is <code>%d</code>.\n\nAdd it as the <code>ALLOWED_CHAT_ID</code> secret in your Cloudflare Worker settings (Settings → Variables and Secrets), then send a voice message again.',
-    unauthorized:
-      '⛔ You are not allowed to use this bot.\n\nYour chat ID is <code>%d</code>.',
     rateLimit: '🕒 Daily limit reached for this chat. Try again tomorrow.',
     geminiRateLimit:
       '😴 Google AI is rate-limiting us. Wait about a minute and try again.',
@@ -36,22 +49,31 @@ const I18N = {
       '🤖 Sorry, transcription failed (%s). Try again in a few seconds.',
     emptyTranscript: '🤔 I could not hear anything clear in that voice message.',
     statusPublic: 'Public mode: anyone can use it (%d/day)',
+    ownerInfo: '👤 Owner: chat %s',
+    noOwnerInfo: '👤 Owner: none — send /claim in Telegram',
   },
   fa: {
     startTitle: '🎙️ بات تبدیل ویس به متن فعال است!',
-    statusOk: '✅ همهچیز آماده است. یک ویس بفرستید تا متنش را بنویسم.',
+    statusOk: '✅ همه‌چیز آماده است. یک ویس بفرستید تا متنش را بنویسم.',
     missing: '⚠️ ناقص: %s',
     notVoice: 'یک <b>ویس</b> بفرستید 🎙️ تا متنش را بنویسم.',
+    noOwner:
+      '🚧 <b>این بات هنوز صاحب ندارد.</b>\n\nاگر همین الان دیپلوی کرده‌اید، دستور <code>/claim</code> را بفرستید تا بات فقط برای شما باشد. تا قبل از آن هیچ‌کس نمی‌تواند استفاده کند.',
+    claimed:
+      '🎉 <b>شما صاحب این بات شدید!</b>\n\nحالا یک ویس بفرستید تا متنش را بنویسم.',
+    alreadyOwner: 'شما صاحب بات هستید. یک ویس بفرستید 🎙️',
+    unauthorized: '⛔ شما مجاز به استفاده از این بات نیستید.',
     chatIdSetup:
       '🚧 <b>راه‌اندازی لازم است</b>\n\nشناسه چت شما: <code>%d</code>\n\nاین مقدار را به‌عنوان <code>ALLOWED_CHAT_ID</code> در تنظیمات وورکر کلادفلر (Settings → Variables and Secrets) ذخیره کنید و دوباره ویس بفرستید.',
-    unauthorized:
-      '⛔ شما مجاز به استفاده از این بات نیستید.\n\nشناسه چت شما: <code>%d</code>',
     rateLimit: '🕒 سقف روزانه این چت پر شده است. فردا دوباره امتحان کنید.',
     geminiRateLimit:
       '😴 گوگل موقتاً ما را محدود کرده است. یک دقیقه صبر کنید و دوباره بفرستید.',
-    geminiError: '🤖 متأسفانه تبدیل انجام نشد (%s). چند ثانیه بعد دوباره تلاش کنید.',
+    geminiError:
+      '🤖 متأسفانه تبدیل انجام نشد (%s). چند ثانیه بعد دوباره تلاش کنید.',
     emptyTranscript: '🤔 صدای واضحی در این ویس نشنیدم.',
     statusPublic: 'حالت عمومی: هر کسی می‌تواند استفاده کند (روزانه %d پیام)',
+    ownerInfo: '👤 صاحب: چت %s',
+    noOwnerInfo: '👤 صاحب: ثبت نشده — در تلگرام /claim بفرستید',
   },
 };
 
@@ -78,13 +100,27 @@ async function handlePost(request, env, ctx) {
 
 async function handleGet(request, env) {
   const url = new URL(request.url);
-  const webhookUrl = `${url.origin}${url.pathname}`;
+  const base = `${url.origin}${url.pathname}`;
+  const kv = env.OWNER_STORE;
+
+  const reset = url.searchParams.get('reset');
+  const resetCode = await deriveResetCode(env.BOT_TOKEN || '');
+  if (reset) {
+    if (!env.BOT_TOKEN || reset !== resetCode) {
+      return new Response('Forbidden', { status: 403 });
+    }
+    if (kv) await kv.delete('owner');
+    return Response.redirect(`${base}?reset=ok`, 302);
+  }
+
+  const owner = kv ? (await kv.get('owner')) || '' : '';
+  const webhookUrl = base;
   const checks = [
     ['BOT_TOKEN', !!env.BOT_TOKEN],
     ['GEMINI_API_KEY', !!env.GEMINI_API_KEY],
-    ['ALLOWED_CHAT_ID', !!env.ALLOWED_CHAT_ID],
+    [kv ? 'OWNER_STORE' : 'ALLOWED_CHAT_ID', kv ? true : !!env.ALLOWED_CHAT_ID],
   ];
-  let webhook = '<span style="color:#f59e0b">⚠ not registered</span>';
+  let webhook = '<span style="color:#f59e0b">⚠ ثبت نشده</span>';
   if (env.BOT_TOKEN) {
     const secret = await deriveSecret(env.BOT_TOKEN);
     const r = await tg('setWebhook', env.BOT_TOKEN, {
@@ -93,7 +129,7 @@ async function handleGet(request, env) {
       allowed_updates: ['message'],
     });
     webhook = r?.ok
-      ? '<span style="color:#22c55e">✅ registered → ' + webhookUrl + '</span>'
+      ? '<span style="color:#22c55e">✅ ثبت شد → ' + webhookUrl + '</span>'
       : '<span style="color:#ef4444">❌ ' + (r?.description || 'failed') + '</span>';
   }
   const rows = checks
@@ -102,6 +138,14 @@ async function handleGet(request, env) {
         `<li><code>${name}</code> ${ok ? '✅' : '❌ missing'}</li>`
     )
     .join('');
+  const ownerLine = kv
+    ? owner
+      ? `<li>👤 صاحب: <code>${owner}</code> &nbsp;<a href="${base}?reset=${resetCode}">بازنشانی</a></li>`
+      : `<li>👤 صاحب: <b style="color:#f59e0b">ثبت نشده</b> — در تلگرام به بات <code>/claim</code> بفرستید</li>`
+    : '';
+  const note = env.BOT_TOKEN && env.GEMINI_API_KEY && (kv || env.ALLOWED_CHAT_ID)
+    ? '<p class="ok">✅ همه‌چیز آماده است. در تلگرام به بات <code>/claim</code> بفرستید (یا اگر مالک هستید، ویس بفرستید).</p>'
+    : '<p>اگر چیزی ❌ است، مقدار را در Cloudflare → وورکر → <code>Settings → Variables and Secrets</code> اضافه کنید و این صفحه را دوباره باز کنید.</p>';
   return new Response(
     `<!DOCTYPE html>
 <html lang="fa" dir="rtl">
@@ -116,13 +160,14 @@ li{padding:8px 0;border-bottom:1px dashed #334155}
 p{line-height:1.9;font-size:14px;color:#94a3b8}
 code{background:#0f172a;padding:2px 8px;border-radius:6px;font-size:13px}
 .ok{color:#22c55e;font-weight:bold}
+a{color:#7dd3fc}
 </style></head>
 <body>
 <div class="card">
 <h1>🎙️ وضعیت بات تبدیل ویس به متن</h1>
-<ul>${rows}</ul>
+<ul>${rows}${ownerLine}</ul>
 <p>وب‌هوک: ${webhook}</p>
-<p class="ok">اگر همه موارد ✅ است، به تلگرام بروید، بات را باز کنید و یک ویس بفرستید.</p>
+${note}
 <p>این صفحه فقط برای راه‌اندازی است؛ هر بار بازدید، وب‌هوک دوباره ثبت می‌شود.</p>
 </div>
 </body></html>`,
@@ -136,37 +181,61 @@ async function processUpdate(update, env) {
   const chatId = msg.chat.id;
   const lang = getLang(msg);
   const strings = I18N[lang];
-  const allowed = parseIds(env.ALLOWED_CHAT_ID);
+  const token = env.BOT_TOKEN;
   const publicMode = env.PUBLIC_BOT === 'true';
+  const kv = env.OWNER_STORE || null;
+  const owner = kv ? (await kv.get('owner')) || '' : '';
 
   if (msg.text === '/start') {
-    return sendMessage(env.BOT_TOKEN, chatId, buildStart(env, strings), msg.message_id);
+    return sendMessage(token, chatId, buildStart(env, strings, owner), msg.message_id);
   }
 
-  if (msg.voice) {
-    if (publicMode) {
-      if (!checkDailyLimit(chatId, env)) {
-        return sendMessage(env.BOT_TOKEN, chatId, strings.rateLimit, msg.message_id);
-      }
-    } else if (allowed.length && !allowed.includes(chatId)) {
+  if (msg.text === '/claim') {
+    if (!kv) {
       return sendMessage(
-        env.BOT_TOKEN,
-        chatId,
-        strings.unauthorized.replace('%d', String(chatId)),
-        msg.message_id
-      );
-    } else if (!allowed.length) {
-      return sendMessage(
-        env.BOT_TOKEN,
+        token,
         chatId,
         strings.chatIdSetup.replace('%d', String(chatId)),
         msg.message_id
       );
     }
+    if (owner) {
+      return sendMessage(token, chatId, strings.alreadyOwner, msg.message_id);
+    }
+    await kv.put('owner', String(chatId));
+    return sendMessage(token, chatId, strings.claimed, msg.message_id);
+  }
+
+  if (msg.voice) {
+    if (publicMode) {
+      if (!checkDailyLimit(chatId, env)) {
+        return sendMessage(token, chatId, strings.rateLimit, msg.message_id);
+      }
+    } else if (kv) {
+      if (!owner) {
+        return sendMessage(token, chatId, strings.noOwner, msg.message_id);
+      }
+      if (String(chatId) !== owner) {
+        return sendMessage(token, chatId, strings.unauthorized, msg.message_id);
+      }
+    } else {
+      const allowed = parseIds(env.ALLOWED_CHAT_ID);
+      if (allowed.length && !allowed.includes(chatId)) {
+        return sendMessage(token, chatId, strings.unauthorized, msg.message_id);
+      }
+      if (!allowed.length) {
+        return sendMessage(
+          token,
+          chatId,
+          strings.chatIdSetup.replace('%d', String(chatId)),
+          msg.message_id
+        );
+      }
+    }
     return transcribe(update, env, lang);
   }
 
-  return sendMessage(env.BOT_TOKEN, chatId, strings.notVoice, msg.message_id);
+  return sendMessage(token, chatId, strings.notVoice, msg.message_id);
 }
 
 async function transcribe(update, env, lang) {
@@ -255,13 +324,17 @@ async function transcribeWithGemini(bytes, mime, env) {
   return text;
 }
 
-function buildStart(env, strings) {
+function buildStart(env, strings, owner) {
   const lines = [strings.startTitle, ''];
   lines.push(`• BOT_TOKEN: ${env.BOT_TOKEN ? '✅' : '❌'}`);
   lines.push(`• GEMINI_API_KEY: ${env.GEMINI_API_KEY ? '✅' : '❌'}`);
-  lines.push(
-    `• ALLOWED_CHAT_ID: ${env.ALLOWED_CHAT_ID ? '✅ ' + env.ALLOWED_CHAT_ID : '❌'}`
-  );
+  if (env.OWNER_STORE) {
+    lines.push(`• ${owner ? strings.ownerInfo.replace('%s', owner) : strings.noOwnerInfo}`);
+  } else {
+    lines.push(
+      `• ALLOWED_CHAT_ID: ${env.ALLOWED_CHAT_ID ? '✅ ' + env.ALLOWED_CHAT_ID : '❌'}`
+    );
+  }
   if (env.PUBLIC_BOT === 'true') {
     lines.push(`• 🌐 ${strings.statusPublic.replace('%d', env.DAILY_LIMIT || '20')}`);
   }
@@ -269,7 +342,12 @@ function buildStart(env, strings) {
   const missing = [];
   if (!env.BOT_TOKEN) missing.push('BOT_TOKEN');
   if (!env.GEMINI_API_KEY) missing.push('GEMINI_API_KEY');
-  if (!env.ALLOWED_CHAT_ID && env.PUBLIC_BOT !== 'true') missing.push('ALLOWED_CHAT_ID');
+  if (!env.OWNER_STORE && !env.ALLOWED_CHAT_ID && env.PUBLIC_BOT !== 'true') {
+    missing.push('ALLOWED_CHAT_ID');
+  }
+  if (env.OWNER_STORE && !owner && env.PUBLIC_BOT !== 'true') {
+    missing.push('/claim');
+  }
   lines.push(missing.length ? strings.missing.replace('%s', missing.join(', ')) : strings.statusOk);
   return lines.join('\n');
 }
@@ -313,14 +391,21 @@ async function sendMessage(token, chatId, text, replyTo) {
 }
 
 async function deriveSecret(token) {
+  return (await sha256Hex(token)).slice(0, 32);
+}
+
+async function deriveResetCode(token) {
+  return (await sha256Hex(token)).slice(0, 12);
+}
+
+async function sha256Hex(input) {
   const hash = await crypto.subtle.digest(
     'SHA-256',
-    new TextEncoder().encode(token)
+    new TextEncoder().encode(input)
   );
   return [...new Uint8Array(hash)]
     .map((b) => b.toString(16).padStart(2, '0'))
-    .join('')
-    .slice(0, 32);
+    .join('');
 }
 
 function bytesToBase64(bytes) {

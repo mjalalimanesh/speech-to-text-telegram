@@ -4,8 +4,16 @@
   "main": "src/worker.js",
   "compatibility_date": "2026-08-01",
   "vars": {
-    "DAILY_LIMIT": "20"
+    "DAILY_LIMIT": "20",
+    "BOT_TOKEN": "",
+    "GEMINI_API_KEY": ""
   },
+  "kv_namespaces": [
+    {
+      "binding": "OWNER_STORE",
+      "id": "placeholder"
+    }
+  ],
   "observability": {
     "enabled": true
   }
