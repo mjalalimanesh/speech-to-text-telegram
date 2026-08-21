@@ -174,6 +174,12 @@ footer { text-align:center; padding:30px 24px 44px; color:var(--muted); font-siz
 <div class="faq">
 
   <details>
+    <summary class="fa">چطور قبل از انتشار، کل فرایند را تست کنم؟</summary>
+    <p class="fa">اگر می‌خواهی دقیقاً همان چیزی را ببینی که یک کاربر جدید می‌بیند: در حالت ناشناس مرورگر (یا یک پروفایل دیگر)، یک حساب GitHub تازه و یک حساب Cloudflare تازه بساز و بعد دکمه Deploy را بزن — کل مسیر را مثل یک کاربر جدید طی کن: اتصال حساب‌ها، وارد کردن <code>BOT_TOKEN</code> و <code>GEMINI_API_KEY</code>، دیپلوی، دکمه «Visit»، و در آخر <code>/claim</code> در تلگرام. این تست در حساب‌های آزمایشی انجام می‌شود و به بات اصلی تو کاری ندارد.</p>
+    <p class="en">To see exactly what a new user sees: in a private/incognito browser window (or another profile), create a fresh GitHub account and a fresh Cloudflare account, then click the Deploy button and go through the whole flow like a new user: connect accounts, enter <code>BOT_TOKEN</code> and <code>GEMINI_API_KEY</code>, deploy, click "Visit", and finally send <code>/claim</code> in Telegram. This test runs on the throwaway accounts and doesn't touch your real bot.</p>
+  </details>
+
+  <details>
     <summary class="fa">دکمه Deploy برای خودم خطای «repository already exists» می‌دهد</summary>
     <p class="fa">مهم: بقیه کاربران هیچ ریپویی نمی‌سازند — خود دکمه Deploy ریپو را داخل اکانت خودشان می‌سازد. این خطا فقط برای صاحب ریپوی اصلی پیش می‌آید (دکمه نمی‌تواند یک کپی روی ریپوی خودت بسازد). پس اگر صاحب ریپو هستی: در Cloudflare → <code>Workers & Pages</code> → <code>Create</code> → <code>Worker</code> → «Deploy from existing repository» را بزن و ریپوی خودت را انتخاب کن.</p>
     <p class="en">Important: other users don't create any repo — the Deploy button creates the repo inside their own account automatically. This error only happens to the owner of the original repo (the button can't copy onto your own repo). If you're the owner: in Cloudflare → <code>Workers & Pages</code> → <code>Create</code> → <code>Worker</code> → choose "Deploy from existing repository" and pick your repo.</p>
