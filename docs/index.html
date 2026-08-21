@@ -174,6 +174,12 @@ footer { text-align:center; padding:30px 24px 44px; color:var(--muted); font-siz
 <div class="faq">
 
   <details>
+    <summary class="fa">دکمه Deploy برای خودم خطای «repository already exists» می‌دهد</summary>
+    <p class="fa">این دکمه برای کسانی است که هنوز این ریپو را ندارند (یک کپی در اکانت خودشان می‌سازد). چون تو خودت این ریپو را داری، از مسیر دستی استفاده کن: در Cloudflare → <code>Workers & Pages</code> → <code>Create</code> → <code>Worker</code>، کد <code>src/worker.js</code> را از GitHub کپی کن و Deploy بزن. راهنمای کامل در README ریپو هست.</p>
+    <p class="en">This button is for people who don't have this repo yet (it creates a copy in their own account). Since you own the repo, deploy manually: in Cloudflare → <code>Workers & Pages</code> → <code>Create</code> → <code>Worker</code>, paste the code from <code>src/worker.js</code> and Deploy. Full guide is in the repo's README.</p>
+  </details>
+
+  <details>
     <summary class="fa">بات جواب نمی‌دهد. چه کار کنم؟</summary>
     <p class="fa">در Cloudflare روی دکمه «Visit» بزن تا بات روشن شود (فقط یک بار لازم است). اگر باز هم جواب نداد، صفحه وضعیت را ببین؛ هر چیزی ❌ بود، همان مقدار را در <code>Settings → Variables and Secrets</code> اضافه کن.</p>
     <p class="en">Click "Visit" in Cloudflare to turn the bot on (only needed once). If it still doesn't answer, check the status page; anything ❌ → add it under <code>Settings → Variables and Secrets</code>.</p>
