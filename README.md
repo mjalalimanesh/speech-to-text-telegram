@@ -39,9 +39,9 @@ A **free, self-deployable Telegram bot** that turns voice messages into text usi
    - `BOT_TOKEN` = the token from step 1
    - `GEMINI_API_KEY` = the key from step 2
    The KV store for the owner is created automatically.
-4. **Claim the bot (no browser needed)**: open your bot in Telegram and send **`/claim`**. A cron job polls for new messages every minute, so the bot answers on its own within ~60 seconds and locks itself to you.
-5. *(Optional, instant replies)* open your worker's URL once in a browser (Cloudflare dashboard → Workers & Pages → your worker → **Visit**). The status page registers the webhook so responses become immediate.
-6. **Done 🎉** — send a voice message and get the text back.
+4. **Register the webhook (one click, instant after that)**: after deployment, click **Visit** on your worker's page in Cloudflare — the page Cloudflare shows you right after the Deploy button finishes. The status page registers the webhook automatically.
+5. **Claim the bot**: open your bot in Telegram and send **`/claim`**. That's it — the bot locks itself to you.
+6. **Done 🎉** — send a voice message and get the text back instantly.
 
 > 💡 Already deployed but the bot ignores you? Re-open the worker URL once — the webhook may not be registered yet.
 
@@ -99,7 +99,7 @@ npx wrangler deploy
 
 ## 🛠️ Troubleshooting
 
-- **Bot doesn't reply** → wait up to a minute (the bot polls for messages every minute until the webhook is registered). Still nothing? Open the worker URL in a browser once and check the status page shows ✅ for everything.
+- **Bot doesn't reply** → open the worker URL in a browser once (click **Visit** in Cloudflare — registers the webhook instantly). Check the status page shows ✅ for everything.
 - **"Missing: /claim"** in /start → send `/claim` in Telegram.
 - **Someone claimed it first** → open your worker URL → click «بازنشانی» (Reset) → send `/claim` again.
 - **Google rate-limit message** → you hit the free quota; wait a minute or a day.
@@ -111,7 +111,7 @@ npx wrangler deploy
 ## 🧱 How it works
 
 ```
-Voice message → Telegram webhook (or cron polling) → Cloudflare Worker
+Voice message → Telegram webhook → Cloudflare Worker
                                     ├─ validates secret header
                                     ├─ checks owner (KV) / ALLOWED_CHAT_ID
                                     ├─ downloads the .ogg file
