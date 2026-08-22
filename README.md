@@ -33,8 +33,8 @@ A **free, self-deployable Telegram bot** that turns voice messages into text usi
 
 1. **Create the bot**: open [@BotFather](https://t.me/BotFather) in Telegram → `/newbot` → choose a name and username → **copy the token** (looks like `123456:ABC...`).
 2. **Get the Gemini key**: open [aistudio.google.com/apikey](https://aistudio.google.com/apikey) → **Create API key** → copy it. *(If you see 403 / "Access denied", use a stronger VPN.)*
-3. **Copy the code (create the repository manually, one click)**: open the repo page and click the green **"Use this template"** button — or go straight to [github.com/new?template_name=speech-to-text-telegram&template_owner=mjalalimanesh](https://github.com/new?template_name=speech-to-text-telegram&template_owner=mjalalimanesh). Give the copy a name (e.g. `my-voice-bot`) and click **Create repository**. *(No GitHub account yet? Create a free one at github.com first.)*
-4. **Deploy from your existing repository**: [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages** → **Create** → **Worker** → **Deploy from existing repository** → connect **GitHub** → choose the repo you just created → when prompted, paste:
+3. **Copy the code (create the repository manually, one click)**: open [github.com/new?template_name=speech-to-text-telegram&template_owner=mjalalimanesh](https://github.com/new?template_name=speech-to-text-telegram&template_owner=mjalalimanesh) — it opens the create-repo page with this code pre-filled. Give the copy a name (e.g. `my-voice-bot`) and click **Create repository**. *(No GitHub account yet? Create a free one at github.com first.)*
+4. **Deploy from your existing repository**: go to the **Workers & Pages** page in Cloudflare ([direct link: dash.cloudflare.com/?to=/:account/workers-and-pages](https://dash.cloudflare.com/?to=/:account/workers-and-pages)) → **Create application** → **Import an existing Git repository** → connect **GitHub** → choose the repo you just created → when prompted, paste:
    - `BOT_TOKEN` = the token from step 1
    - `GEMINI_API_KEY` = the key from step 2
    → click **Deploy**, then click **Visit** once (registers the webhook).
