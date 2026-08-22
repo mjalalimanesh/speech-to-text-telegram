@@ -5,7 +5,7 @@
  * (Gemini) API. Zero dependencies, no build step.
  *
  * Deploy it with GitHub "Use this template" → "Deploy from existing repository"
- * in Cloudflare, with the Deploy-to-Cloudflare button, or with `wrangler deploy`.
+ * in Cloudflare, or with `wrangler deploy`.
  *
  * Setup (webhook-based — instant replies):
  *   1. Set BOT_TOKEN + GEMINI_API_KEY (prompted by the Cloudflare deploy wizard).
