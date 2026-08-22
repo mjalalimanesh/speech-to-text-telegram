@@ -43,9 +43,7 @@ A **free, self-deployable Telegram bot** that turns voice messages into text usi
 5. **Lock the bot to yourself**: open the bot in Telegram and send any message (`/start`) → it replies with your chat ID → add it as **`ALLOWED_CHAT_ID`** under **Settings → Variables and Secrets** in your worker → **Save**.
 6. **Done 🎉** — send a voice message and get the text back instantly.
 
-> 💡 The orange Deploy-to-Cloudflare button below is a shortcut that usually works, but it can fail to create a repo (especially for the original repo's owner). If it errors, just use Option A — same result, no Cloudflare repo-creation involved.
-
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/mjalalimanesh/speech-to-text-telegram)
+> 💡 The orange Deploy-to-Cloudflare button that used to be here was removed because Cloudflare frequently fails to create the repo during that flow. Use Option A above — same result, no Cloudflare repo-creation involved.
 
 ---
 
