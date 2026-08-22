@@ -209,20 +209,20 @@ footer { text-align:center; padding:30px 24px 44px; color:var(--muted); font-siz
 
   <details>
     <summary class="fa">چطور قبل از انتشار، کل فرایند را تست کنم؟</summary>
-    <p class="fa">اگر می‌خواهی دقیقاً همان چیزی را ببینی که یک کاربر جدید می‌بیند: در حالت ناشناس مرورگر (یا یک پروفایل دیگر)، یک حساب GitHub تازه و یک حساب Cloudflare تازه بساز و دقیقاً مراحل بالا را انجام بده: «Use this template» → دیپلوی از ریپوی موجود → دکمه Visit → پیام به بات → تنظیم <code>ALLOWED_CHAT_ID</code> → ارسال ویس. این تست در حساب‌های آزمایشی انجام می‌شود و به بات اصلی تو کاری ندارد.</p>
-    <p class="en">To see exactly what a new user sees: in a private/incognito browser window (or another profile), create a fresh GitHub account and a fresh Cloudflare account, then follow the steps above exactly: "Use this template" → deploy from your existing repo → click Visit → message the bot → set <code>ALLOWED_CHAT_ID</code> → send a voice note. This test runs on the throwaway accounts and doesn't touch your real bot.</p>
-  </details>
-
-  <details>
-    <summary class="fa">دکمه نارنجی Deploy برای من خطا می‌دهد</summary>
-    <p class="fa">دکمه نارنجی فقط یک میانبر است؛ بیشتر وقت‌ها کار می‌کند اما بعضی وقت‌ها Cloudflare نمی‌تواند ریپو بسازد (مخصوصاً اگر صاحب ریپوی اصلی هستی). اگر خطا گرفت، اصلاً به دکمه کار نداشته باش و مراحل ۳ تا ۵ بالا را دنبال کن: یک کپی با «Use this template» بساز و بعد از ریپوی خودت دیپلوی کن — همان نتیجه، بدون اینکه Cloudflare ریپویی بسازد.</p>
-    <p class="en">The orange button is just a shortcut; it usually works, but sometimes Cloudflare can't create the repo (especially if you're the owner of the original repo). If it errors, ignore the button entirely and follow steps 3–5 above: make a copy with "Use this template", then deploy from your own repo — same result, without Cloudflare creating any repo.</p>
+    <p class="fa">اگر می‌خواهی دقیقاً همان چیزی را ببینی که یک کاربر جدید می‌بیند: در حالت ناشناس مرورگر (یا یک پروفایل دیگر)، یک حساب GitHub تازه و یک حساب Cloudflare تازه بساز و دقیقاً مراحل بالا را انجام بده: «Use this template» → دیپلوی از ریپوی موجود → فعال‌کردن <code>Worker URL</code> در تب <code>Domains</code> → دکمه Visit → پیام به بات → تنظیم <code>ALLOWED_CHAT_ID</code> → ارسال ویس. این تست در حساب‌های آزمایشی انجام می‌شود و به بات اصلی تو کاری ندارد.</p>
+    <p class="en">To see exactly what a new user sees: in a private/incognito browser window (or another profile), create a fresh GitHub account and a fresh Cloudflare account, then follow the steps above exactly: "Use this template" → deploy from your existing repo → enable the <code>Worker URL</code> on the <code>Domains</code> tab → click Visit → message the bot → set <code>ALLOWED_CHAT_ID</code> → send a voice note. This test runs on the throwaway accounts and doesn't touch your real bot.</p>
   </details>
 
   <details>
     <summary class="fa">بات جواب نمی‌دهد. چه کار کنم؟</summary>
-    <p class="fa">در Cloudflare روی دکمه «Visit» بزن تا بات روشن شود (فقط یک بار لازم است). اگر باز هم جواب نداد، صفحه وضعیت را ببین؛ هر چیزی ❌ بود، همان مقدار را در <code>Settings → Variables and Secrets</code> اضافه کن.</p>
-    <p class="en">Click "Visit" in Cloudflare to turn the bot on (only needed once). If it still doesn't answer, check the status page; anything ❌ → add it under <code>Settings → Variables and Secrets</code>.</p>
+    <p class="fa">بعد از دیپلوی، در تب <code>Domains</code> گزینه <code>Worker URL</code> را فعال کن تا دکمه <code>Visit</code> ظاهر شود و یک بار روی آن بزن (بات روشن می‌شود). اگر باز هم جواب نداد، صفحه وضعیت را ببین؛ هر چیزی ❌ بود، همان مقدار را در <code>Settings → Variables and Secrets</code> اضافه کن.</p>
+    <p class="en">After deploying, enable the <code>Worker URL</code> on the <code>Domains</code> tab so the <code>Visit</code> button appears, then click it once (this turns the bot on). If it still doesn't answer, check the status page; anything ❌ → add it under <code>Settings → Variables and Secrets</code>.</p>
+  </details>
+
+  <details>
+    <summary class="fa">پیام «transcription failed (gemini 404)» می‌آید</summary>
+    <p class="fa">گوگل مدل پیش‌فرض قدیمی را بازنشسته کرده است. یک متغیر <code>GEMINI_MODEL</code> با مقدار <code>gemini-3.5-flash-lite</code> در <code>Settings → Variables and Secrets</code> اضافه کن و <code>Deploy</code> بزن. (بات‌هایی که تازه دیپلوی شده‌اند به این مشکل نمی‌خورند.)</p>
+    <p class="en">Google retired the old default model. Add a <code>GEMINI_MODEL</code> variable with value <code>gemini-3.5-flash-lite</code> under <code>Settings → Variables and Secrets</code> and click <code>Deploy</code>. (Freshly deployed bots don't hit this.)</p>
   </details>
 
   <details>
