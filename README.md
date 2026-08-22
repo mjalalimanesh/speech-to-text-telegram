@@ -36,10 +36,8 @@ A **free, self-deployable Telegram bot** that turns voice messages into text usi
 3. **Get your chat ID**: message [@userinfobot](https://t.me/userinfobot) (or @getidsbot) in Telegram → send `/start` → copy your numeric chat ID (e.g. `123456789`).
 4. **Copy the code (create the repository manually, one click)**: open [github.com/new?template_name=speech-to-text-telegram&template_owner=mjalalimanesh](https://github.com/new?template_name=speech-to-text-telegram&template_owner=mjalalimanesh) — it opens the create-repo page with this code pre-filled. Give the copy a name (e.g. `my-voice-bot`) and click **Create repository**. *(No GitHub account yet? Create a free one at github.com first.)*
 5. **Deploy from your existing repository**: go to the **Workers & Pages** page in Cloudflare ([direct link: dash.cloudflare.com/?to=/:account/workers-and-pages](https://dash.cloudflare.com/?to=/:account/workers-and-pages)) → **Create application** → **Import an existing Git repository** → connect **GitHub** → choose the repo you just created → click **Deploy**.
-6. **Add the three values and turn it on**: in your worker → **Settings → Variables and Secrets** → the three placeholders should be listed empty — click **Edit** on each and paste `BOT_TOKEN` (step 1), `GEMINI_API_KEY` (step 2), `ALLOWED_CHAT_ID` (step 3). If `ALLOWED_CHAT_ID` isn't listed, click **Add**, type the name, paste the number → **Save** → click **Visit** once (registers the webhook).
+6. **Add the three values and turn it on**: in your worker → **Settings → Variables and Secrets** → the three placeholders are listed empty — click **Edit** on each and paste `BOT_TOKEN` (step 1), `GEMINI_API_KEY` (step 2), `ALLOWED_CHAT_ID` (step 3) → **Save** → click **Visit** once (registers the webhook).
 7. **Done 🎉** — send a voice message and get the text back instantly.
-
-> 💡 There's no one-click Deploy button — Cloudflare frequently fails to create the repo during that flow, so use Option A above: copy via "Use this template", then deploy from your own repo. Same result, no Cloudflare repo-creation involved.
 
 ---
 
