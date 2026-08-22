@@ -33,13 +33,11 @@ A **free, self-deployable Telegram bot** that turns voice messages into text usi
 
 1. **Create the bot**: open [@BotFather](https://t.me/BotFather) in Telegram → `/newbot` → choose a name and username → **copy the token** (looks like `123456:ABC...`).
 2. **Get the Gemini key**: open [aistudio.google.com/apikey](https://aistudio.google.com/apikey) → **Create API key** → copy it. *(If you see 403 / "Access denied", use a stronger VPN.)*
-3. **Copy the code (create the repository manually, one click)**: open [github.com/new?template_name=speech-to-text-telegram&template_owner=mjalalimanesh](https://github.com/new?template_name=speech-to-text-telegram&template_owner=mjalalimanesh) — it opens the create-repo page with this code pre-filled. Give the copy a name (e.g. `my-voice-bot`) and click **Create repository**. *(No GitHub account yet? Create a free one at github.com first.)*
-4. **Deploy from your existing repository**: go to the **Workers & Pages** page in Cloudflare ([direct link: dash.cloudflare.com/?to=/:account/workers-and-pages](https://dash.cloudflare.com/?to=/:account/workers-and-pages)) → **Create application** → **Import an existing Git repository** → connect **GitHub** → choose the repo you just created → when prompted, paste:
-   - `BOT_TOKEN` = the token from step 1
-   - `GEMINI_API_KEY` = the key from step 2
-   → click **Deploy**, then click **Visit** once (registers the webhook).
-5. **Lock the bot to yourself**: open the bot in Telegram and send any message (`/start`) → it replies with your chat ID → add it as **`ALLOWED_CHAT_ID`** under **Settings → Variables and Secrets** in your worker → **Save**.
-6. **Done 🎉** — send a voice message and get the text back instantly.
+3. **Get your chat ID**: message [@userinfobot](https://t.me/userinfobot) (or @getidsbot) in Telegram → send `/start` → copy your numeric chat ID (e.g. `123456789`).
+4. **Copy the code (create the repository manually, one click)**: open [github.com/new?template_name=speech-to-text-telegram&template_owner=mjalalimanesh](https://github.com/new?template_name=speech-to-text-telegram&template_owner=mjalalimanesh) — it opens the create-repo page with this code pre-filled. Give the copy a name (e.g. `my-voice-bot`) and click **Create repository**. *(No GitHub account yet? Create a free one at github.com first.)*
+5. **Deploy from your existing repository**: go to the **Workers & Pages** page in Cloudflare ([direct link: dash.cloudflare.com/?to=/:account/workers-and-pages](https://dash.cloudflare.com/?to=/:account/workers-and-pages)) → **Create application** → **Import an existing Git repository** → connect **GitHub** → choose the repo you just created → click **Deploy**.
+6. **Add the three values and turn it on**: in your worker → **Settings → Variables and Secrets** → add `BOT_TOKEN` (step 1), `GEMINI_API_KEY` (step 2), and `ALLOWED_CHAT_ID` (step 3) → **Save** → click **Visit** once (registers the webhook). *(If empty `BOT_TOKEN`/`GEMINI_API_KEY` vars already exist, delete them first.)*
+7. **Done 🎉** — send a voice message and get the text back instantly.
 
 > 💡 There's no one-click Deploy button — Cloudflare frequently fails to create the repo during that flow, so use Option A above: copy via "Use this template", then deploy from your own repo. Same result, no Cloudflare repo-creation involved.
 
@@ -51,14 +49,14 @@ A **free, self-deployable Telegram bot** that turns voice messages into text usi
 |---|---|---|
 | `BOT_TOKEN` | ✅ | Telegram bot token from @BotFather |
 | `GEMINI_API_KEY` | ✅ | Free key from Google AI Studio |
-| `ALLOWED_CHAT_ID` | ✅ | Your chat ID — the only person allowed to use the bot (comma-separated for multiple) |
+| `ALLOWED_CHAT_ID` | ✅ | Your chat ID — the only person allowed to use the bot (get it from @userinfobot; comma-separated for multiple) |
 | `PUBLIC_BOT` | – | Set to `true` to let anyone use your bot (uses your Gemini quota) |
 | `DAILY_LIMIT` | – | Per-chat daily cap in public mode (default `20`) |
 | `GEMINI_MODEL` | – | Default `gemini-2.5-flash-lite` — free-tier friendly |
 | `OWNER_STORE` (KV binding) | – | Optional: enables `/claim` (first sender owns the bot). Requires manual KV setup |
 
 **Access model:**
-- Default (no KV) → `ALLOWED_CHAT_ID` (comma-separated chat IDs) decides who can use the bot. Get your ID by sending any message to the bot *before* this is set — it replies with your chat ID.
+- Default (no KV) → `ALLOWED_CHAT_ID` (comma-separated chat IDs) decides who can use the bot. Get your ID from @userinfobot in Telegram.
 - KV present → owner = whoever sent `/claim` first. Reset it from the worker status page if needed.
 - `PUBLIC_BOT=true` → anyone can use it (with `DAILY_LIMIT` per chat).
 

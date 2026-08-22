@@ -70,8 +70,8 @@ footer { text-align:center; padding:30px 24px 44px; color:var(--muted); font-siz
 
 <main>
 
-<h2 class="fa">پنج قدم ساده</h2>
-<h2 class="en">Five Simple Steps</h2>
+<h2 class="fa">شش قدم ساده</h2>
+<h2 class="en">Six Simple Steps</h2>
 
 <div class="steps">
 
@@ -108,6 +108,23 @@ footer { text-align:center; padding:30px 24px 44px; color:var(--muted); font-siz
   </div>
 
   <div class="step">
+    <h3 class="fa">شناسه چتت را بگیر</h3>
+    <h3 class="en">Get your chat ID</h3>
+    <ol class="fa">
+      <li>در تلگرام به <a href="https://t.me/userinfobot" target="_blank" rel="noopener">@userinfobot</a> (یا @getidsbot) پیام بده</li>
+      <li>دستور <code>/start</code> را بفرست</li>
+      <li>شناسه عددی خودت را کپی کن (چیزی مثل <code>123456789</code>)</li>
+    </ol>
+    <ol class="en">
+      <li>Message <a href="https://t.me/userinfobot" target="_blank" rel="noopener">@userinfobot</a> (or @getidsbot) in Telegram</li>
+      <li>Send <code>/start</code></li>
+      <li>Copy your numeric chat ID (looks like <code>123456789</code>)</li>
+    </ol>
+    <span class="tip fa">💡 این شناسه در قدم آخر لازم می‌شود تا بات فقط برای تو باشد.</span>
+    <span class="tip en">💡 You'll need this in the last step to lock the bot to yourself.</span>
+  </div>
+
+  <div class="step">
     <h3 class="fa">یک کپی از کد بساز (Use this template)</h3>
     <h3 class="en">Make a copy of the code (Use this template)</h3>
     <ol class="fa">
@@ -130,36 +147,36 @@ footer { text-align:center; padding:30px 24px 44px; color:var(--muted); font-siz
       <li>به صفحه <a href="https://dash.cloudflare.com/?to=/:account/workers-and-pages" target="_blank" rel="noopener"><strong>Workers &amp; Pages</strong></a> برو</li>
       <li>روی <code>Create application</code> بزن و <code>Import an existing Git repository</code> را انتخاب کن</li>
       <li>اتصال <code>GitHub</code> را بزن و ریپویی که در قدم قبل ساختی را انتخاب کن</li>
-      <li>وقتی خواست، این دو مقدار را بگذار: <code>BOT_TOKEN</code> و <code>GEMINI_API_KEY</code></li>
-      <li><code>Deploy</code> بزن و بعد دکمه <code>Visit</code> را یک بار بزن تا بات روشن شود</li>
+      <li><code>Deploy</code> بزن</li>
     </ol>
     <ol class="en">
       <li>Open <a href="https://dash.cloudflare.com" target="_blank" rel="noopener">dash.cloudflare.com</a> (free account)</li>
       <li>Go to the <a href="https://dash.cloudflare.com/?to=/:account/workers-and-pages" target="_blank" rel="noopener"><strong>Workers &amp; Pages</strong></a> page</li>
       <li>Click <code>Create application</code>, then choose <code>Import an existing Git repository</code></li>
       <li>Connect <code>GitHub</code> and choose the repo you created in the previous step</li>
-      <li>When prompted, enter <code>BOT_TOKEN</code> and <code>GEMINI_API_KEY</code></li>
-      <li>Click <code>Deploy</code>, then click <code>Visit</code> once to turn the bot on</li>
+      <li>Click <code>Deploy</code></li>
     </ol>
   </div>
 
   <div class="step">
-    <h3 class="fa">بات را فقط برای خودت کن</h3>
-    <h3 class="en">Lock the bot to yourself</h3>
+    <h3 class="fa">سه مقدار را اضافه کن و روشنش کن</h3>
+    <h3 class="en">Add three values and turn it on</h3>
     <ol class="fa">
-      <li>در تلگرام بات را باز کن و هر پیامی بفرست (مثلاً <code>/start</code>)</li>
-      <li>بات جواب می‌دهد: «شناسه چت شما: <code>N</code>» — آن عدد را کپی کن</li>
-      <li>در Cloudflare → وورکر خودت → <code>Settings → Variables and Secrets</code> متغیر <code>ALLOWED_CHAT_ID</code> را با همان عدد بساز و <code>Save</code> بزن</li>
+      <li>در Cloudflare → وورکر خودت → <code>Settings → Variables and Secrets</code></li>
+      <li>این سه مقدار را اضافه کن: <code>BOT_TOKEN</code> (از قدم ۱)، <code>GEMINI_API_KEY</code> (از قدم ۲) و <code>ALLOWED_CHAT_ID</code> (شماره قدم ۳)</li>
+      <li><code>Save</code> بزن</li>
+      <li>دکمه <code>Visit</code> را یک بار بزن (یا URL وورکرت را باز کن) تا وب‌هوک ثبت شود</li>
       <li>حالا یک ویس بفرست — متنش را تحویل بگیر 🎉</li>
     </ol>
     <ol class="en">
-      <li>Open the bot in Telegram and send any message (e.g. <code>/start</code>)</li>
-      <li>The bot replies: "your chat ID is <code>N</code>" — copy that number</li>
-      <li>In Cloudflare → your worker → <code>Settings → Variables and Secrets</code>, create <code>ALLOWED_CHAT_ID</code> with that number and <code>Save</code></li>
+      <li>In Cloudflare → your worker → <code>Settings → Variables and Secrets</code></li>
+      <li>Add these three values: <code>BOT_TOKEN</code> (from step 1), <code>GEMINI_API_KEY</code> (from step 2), and <code>ALLOWED_CHAT_ID</code> (the number from step 3)</li>
+      <li>Click <code>Save</code></li>
+      <li>Click <code>Visit</code> once (or reopen your worker URL) to register the webhook</li>
       <li>Now send a voice message and get the text back 🎉</li>
     </ol>
-    <span class="tip fa">💡 تا وقتی این کار را نکنی، هیچ‌کس (حتی تو) نمی‌تواند ویس بفرستد — بات فقط کد شناسه را نشان می‌دهد.</span>
-    <span class="tip en">💡 Until you do this, nobody (even you) can send a voice — the bot only prints the chat ID.</span>
+    <span class="tip fa">💡 اگر قبلاً متغیرهای خالی <code>BOT_TOKEN</code> یا <code>GEMINI_API_KEY</code> ساخته شده بود، اول آن‌ها را حذف کن و بعد به‌صورت Secret اضافه کن.</span>
+    <span class="tip en">💡 If empty <code>BOT_TOKEN</code>/<code>GEMINI_API_KEY</code> vars were created earlier, delete them first, then add them as secrets.</span>
   </div>
 
 </div>

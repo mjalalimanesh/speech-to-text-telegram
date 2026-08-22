@@ -1,5 +1,5 @@
 # Copy this file to .dev.vars and fill in values for local development.
-# In production (Cloudflare), the deploy wizard prompts for these values.
+# In production (Cloudflare), add these under Settings → Variables and Secrets after deploying.
 BOT_TOKEN=123456:ABC-your-telegram-bot-token
 GEMINI_API_KEY=AIza-your-google-ai-studio-key
 # PUBLIC_BOT=false

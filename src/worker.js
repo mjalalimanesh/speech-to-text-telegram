@@ -8,12 +8,14 @@
  * in Cloudflare, or with `wrangler deploy`.
  *
  * Setup (webhook-based — instant replies):
- *   1. Set BOT_TOKEN + GEMINI_API_KEY (prompted by the Cloudflare deploy wizard).
- *   2. After deploying, click "Visit" on your worker's page in Cloudflare —
- *      the webhook registers automatically (one time, takes one click).
+ *   1. Set BOT_TOKEN + GEMINI_API_KEY (add them as secrets under
+ *      Settings → Variables and Secrets after deploying).
+ *   2. Click "Visit" on your worker's page in Cloudflare (or reopen the worker
+ *      URL) — the webhook registers automatically (one time, takes one click).
  *   3. In Telegram, send any message to the bot — it replies with your chat ID.
  *      Add it as ALLOWED_CHAT_ID (Settings → Variables and Secrets) to lock
- *      the bot to yourself.
+ *      the bot to yourself. (You can also get your chat ID from @userinfobot
+ *      before deploying.)
  *
  * Env / vars (Settings → Variables and Secrets):
  *   BOT_TOKEN         Telegram bot token from @BotFather (required)
