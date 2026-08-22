@@ -8,12 +8,6 @@
     "BOT_TOKEN": "",
     "GEMINI_API_KEY": ""
   },
-  "kv_namespaces": [
-    {
-      "binding": "OWNER_STORE",
-      "id": "placeholder"
-    }
-  ],
   "observability": {
     "enabled": true
   }

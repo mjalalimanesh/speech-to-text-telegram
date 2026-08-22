@@ -70,12 +70,14 @@ footer { text-align:center; padding:30px 24px 44px; color:var(--muted); font-siz
   <a class="deploy-btn en" href="https://deploy.workers.cloudflare.com/?url=https://github.com/mjalalimanesh/speech-to-text-telegram">🚀 Deploy Your Own — Free</a>
   <div class="meta fa">میزبانی رایگان Cloudflare · دیلی کووتای رایگان گوگل · حریم خصوصی کامل</div>
   <div class="meta en">Free Cloudflare hosting · Google's free daily quota · Fully private</div>
+  <div class="meta fa" style="margin-top:12px; max-width:520px; margin-inline:auto;">⚠️ دکمه نارنجی میانبر است — اگر خطای «نمی‌توانم ریپو بسازم» داد، فقط مراحل پایین را دنبال کن.</div>
+  <div class="meta en" style="margin-top:12px; max-width:520px; margin-inline:auto;">⚠️ The orange button is a shortcut — if it fails to create a repo, just follow the steps below.</div>
 </header>
 
 <main>
 
-<h2 class="fa">چهار قدم ساده</h2>
-<h2 class="en">Four Simple Steps</h2>
+<h2 class="fa">پنج قدم ساده</h2>
+<h2 class="en">Five Simple Steps</h2>
 
 <div class="steps">
 
@@ -112,17 +114,38 @@ footer { text-align:center; padding:30px 24px 44px; color:var(--muted); font-siz
   </div>
 
   <div class="step">
-    <h3 class="fa">با یک کلیک Deploy کن</h3>
-    <h3 class="en">Deploy with one click</h3>
+    <h3 class="fa">یک کپی از کد بساز (Use this template)</h3>
+    <h3 class="en">Make a copy of the code (Use this template)</h3>
     <ol class="fa">
-      <li>روی دکمه نارنجی «Deploy» بالای صفحه بزن</li>
-      <li>اکانت رایگان Cloudflare و GitHub را متصل کن</li>
-      <li>وقتی خواست، این دو مقدار را بگذار: <code>BOT_TOKEN</code> و <code>GEMINI_API_KEY</code></li>
+      <li>اگر حساب GitHub نداری، یک حساب رایگان بساز — <code>github.com → Sign up</code> (یک دقیقه)</li>
+      <li>روی دکمه سبز <a href="https://github.com/new?template_name=speech-to-text-telegram&template_owner=mjalalimanesh" target="_blank" rel="noopener"><strong>Use this template</strong></a> بزن (روی <a href="https://github.com/mjalalimanesh/speech-to-text-telegram" target="_blank" rel="noopener">صفحه ریپو</a> هم هست)</li>
+      <li>یک نام دلخواه بگذار (مثلاً <code>my-voice-bot</code>) و <code>Create repository</code> را بزن</li>
     </ol>
     <ol class="en">
-      <li>Click the orange Deploy button at the top</li>
-      <li>Connect your free Cloudflare and GitHub accounts</li>
+      <li>If you don't have GitHub, create a free account — <code>github.com → Sign up</code> (one minute)</li>
+      <li>Click the green <a href="https://github.com/new?template_name=speech-to-text-telegram&template_owner=mjalalimanesh" target="_blank" rel="noopener"><strong>Use this template</strong></a> button (it's also on the <a href="https://github.com/mjalalimanesh/speech-to-text-telegram" target="_blank" rel="noopener">repo page</a>)</li>
+      <li>Give it a name (e.g. <code>my-voice-bot</code>) and click <code>Create repository</code></li>
+    </ol>
+    <span class="tip fa">💡 این یعنی «ریپو را دستی بساز» — حالا مال خودت است و Cloudflare فقط دیپلوی می‌کند.</span>
+    <span class="tip en">💡 This is "create the repository manually" — it's now yours, Cloudflare just deploys it.</span>
+  </div>
+
+  <div class="step">
+    <h3 class="fa">در Cloudflare دیپلوی کن</h3>
+    <h3 class="en">Deploy in Cloudflare</h3>
+    <ol class="fa">
+      <li>وارد <a href="https://dash.cloudflare.com" target="_blank" rel="noopener">dash.cloudflare.com</a> شو (حساب رایگان)</li>
+      <li>منوی <code>Workers &amp; Pages</code> → <code>Create</code> → <code>Worker</code> → <code>Deploy from existing repository</code></li>
+      <li>اتصال <code>GitHub</code> را بزن و ریپویی که در قدم قبل ساختی را انتخاب کن</li>
+      <li>وقتی خواست، این دو مقدار را بگذار: <code>BOT_TOKEN</code> و <code>GEMINI_API_KEY</code></li>
+      <li><code>Deploy</code> بزن و بعد دکمه <code>Visit</code> را یک بار بزن تا بات روشن شود</li>
+    </ol>
+    <ol class="en">
+      <li>Open <a href="https://dash.cloudflare.com" target="_blank" rel="noopener">dash.cloudflare.com</a> (free account)</li>
+      <li>Menu <code>Workers &amp; Pages</code> → <code>Create</code> → <code>Worker</code> → <code>Deploy from existing repository</code></li>
+      <li>Connect <code>GitHub</code> and choose the repo you created in the previous step</li>
       <li>When prompted, enter <code>BOT_TOKEN</code> and <code>GEMINI_API_KEY</code></li>
+      <li>Click <code>Deploy</code>, then click <code>Visit</code> once to turn the bot on</li>
     </ol>
   </div>
 
@@ -130,17 +153,19 @@ footer { text-align:center; padding:30px 24px 44px; color:var(--muted); font-siz
     <h3 class="fa">بات را فقط برای خودت کن</h3>
     <h3 class="en">Lock the bot to yourself</h3>
     <ol class="fa">
-      <li>بعد از Deploy در همان صفحه، دکمه «Visit» را یک بار بزن — بات فعال می‌شود</li>
-      <li>بات را در تلگرام باز کن</li>
-      <li>دستور <code>/claim</code> را بفرست — بات فقط برای تو می‌شود 🎉</li>
+      <li>در تلگرام بات را باز کن و هر پیامی بفرست (مثلاً <code>/start</code>)</li>
+      <li>بات جواب می‌دهد: «شناسه چت شما: <code>N</code>» — آن عدد را کپی کن</li>
+      <li>در Cloudflare → وورکر خودت → <code>Settings → Variables and Secrets</code> متغیر <code>ALLOWED_CHAT_ID</code> را با همان عدد بساز و <code>Save</code> بزن</li>
+      <li>حالا یک ویس بفرست — متنش را تحویل بگیر 🎉</li>
     </ol>
     <ol class="en">
-      <li>After deploying, click "Visit" once on the page — the bot turns on</li>
-      <li>Open the bot in Telegram</li>
-      <li>Send <code>/claim</code> — the bot becomes yours 🎉</li>
+      <li>Open the bot in Telegram and send any message (e.g. <code>/start</code>)</li>
+      <li>The bot replies: "your chat ID is <code>N</code>" — copy that number</li>
+      <li>In Cloudflare → your worker → <code>Settings → Variables and Secrets</code>, create <code>ALLOWED_CHAT_ID</code> with that number and <code>Save</code></li>
+      <li>Now send a voice message and get the text back 🎉</li>
     </ol>
-    <span class="tip fa">💡 فقط یک بار لازم است. اگر کس دیگری زودتر /claim زد، از صفحه وورکر خودت «بازنشانی» را بزن.</span>
-    <span class="tip en">💡 Only needed once. If someone else claimed it first, hit "Reset" on your worker page.</span>
+    <span class="tip fa">💡 تا وقتی این کار را نکنی، هیچ‌کس (حتی تو) نمی‌تواند ویس بفرستد — بات فقط کد شناسه را نشان می‌دهد.</span>
+    <span class="tip en">💡 Until you do this, nobody (even you) can send a voice — the bot only prints the chat ID.</span>
   </div>
 
 </div>
@@ -175,14 +200,14 @@ footer { text-align:center; padding:30px 24px 44px; color:var(--muted); font-siz
 
   <details>
     <summary class="fa">چطور قبل از انتشار، کل فرایند را تست کنم؟</summary>
-    <p class="fa">اگر می‌خواهی دقیقاً همان چیزی را ببینی که یک کاربر جدید می‌بیند: در حالت ناشناس مرورگر (یا یک پروفایل دیگر)، یک حساب GitHub تازه و یک حساب Cloudflare تازه بساز و بعد دکمه Deploy را بزن — کل مسیر را مثل یک کاربر جدید طی کن: اتصال حساب‌ها، وارد کردن <code>BOT_TOKEN</code> و <code>GEMINI_API_KEY</code>، دیپلوی، دکمه «Visit»، و در آخر <code>/claim</code> در تلگرام. این تست در حساب‌های آزمایشی انجام می‌شود و به بات اصلی تو کاری ندارد.</p>
-    <p class="en">To see exactly what a new user sees: in a private/incognito browser window (or another profile), create a fresh GitHub account and a fresh Cloudflare account, then click the Deploy button and go through the whole flow like a new user: connect accounts, enter <code>BOT_TOKEN</code> and <code>GEMINI_API_KEY</code>, deploy, click "Visit", and finally send <code>/claim</code> in Telegram. This test runs on the throwaway accounts and doesn't touch your real bot.</p>
+    <p class="fa">اگر می‌خواهی دقیقاً همان چیزی را ببینی که یک کاربر جدید می‌بیند: در حالت ناشناس مرورگر (یا یک پروفایل دیگر)، یک حساب GitHub تازه و یک حساب Cloudflare تازه بساز و دقیقاً مراحل بالا را انجام بده: «Use this template» → دیپلوی از ریپوی موجود → دکمه Visit → پیام به بات → تنظیم <code>ALLOWED_CHAT_ID</code> → ارسال ویس. این تست در حساب‌های آزمایشی انجام می‌شود و به بات اصلی تو کاری ندارد.</p>
+    <p class="en">To see exactly what a new user sees: in a private/incognito browser window (or another profile), create a fresh GitHub account and a fresh Cloudflare account, then follow the steps above exactly: "Use this template" → deploy from your existing repo → click Visit → message the bot → set <code>ALLOWED_CHAT_ID</code> → send a voice note. This test runs on the throwaway accounts and doesn't touch your real bot.</p>
   </details>
 
   <details>
-    <summary class="fa">دکمه Deploy برای خودم خطای «repository already exists» می‌دهد</summary>
-    <p class="fa">مهم: بقیه کاربران هیچ ریپویی نمی‌سازند — خود دکمه Deploy ریپو را داخل اکانت خودشان می‌سازد. این خطا فقط برای صاحب ریپوی اصلی پیش می‌آید (دکمه نمی‌تواند یک کپی روی ریپوی خودت بسازد). پس اگر صاحب ریپو هستی: در Cloudflare → <code>Workers & Pages</code> → <code>Create</code> → <code>Worker</code> → «Deploy from existing repository» را بزن و ریپوی خودت را انتخاب کن.</p>
-    <p class="en">Important: other users don't create any repo — the Deploy button creates the repo inside their own account automatically. This error only happens to the owner of the original repo (the button can't copy onto your own repo). If you're the owner: in Cloudflare → <code>Workers & Pages</code> → <code>Create</code> → <code>Worker</code> → choose "Deploy from existing repository" and pick your repo.</p>
+    <summary class="fa">دکمه نارنجی Deploy برای من خطا می‌دهد</summary>
+    <p class="fa">دکمه نارنجی فقط یک میانبر است؛ بیشتر وقت‌ها کار می‌کند اما بعضی وقت‌ها Cloudflare نمی‌تواند ریپو بسازد (مخصوصاً اگر صاحب ریپوی اصلی هستی). اگر خطا گرفت، اصلاً به دکمه کار نداشته باش و مراحل ۳ تا ۵ بالا را دنبال کن: یک کپی با «Use this template» بساز و بعد از ریپوی خودت دیپلوی کن — همان نتیجه، بدون اینکه Cloudflare ریپویی بسازد.</p>
+    <p class="en">The orange button is just a shortcut; it usually works, but sometimes Cloudflare can't create the repo (especially if you're the owner of the original repo). If it errors, ignore the button entirely and follow steps 3–5 above: make a copy with "Use this template", then deploy from your own repo — same result, without Cloudflare creating any repo.</p>
   </details>
 
   <details>
@@ -192,9 +217,9 @@ footer { text-align:center; padding:30px 24px 44px; color:var(--muted); font-siz
   </details>
 
   <details>
-    <summary class="fa">اگر شخص دیگری /claim بزند چه؟</summary>
-    <p class="fa">تا لحظه‌ای که کسی /claim نزده، اولین نفر صاحب بات می‌شود؛ پس بلافاصله بعد از Deploy این کار را بکن. اگر اشتباهی شد، صفحه وورکر خودت را باز کن و روی «بازنشانی» بزن تا صاحب پاک شود و دوباره /claim بفرستی.</p>
-    <p class="en">The first person to send /claim owns the bot — do it right after deploying. If someone claimed it by mistake, open your worker page and click "Reset" to clear the owner, then send /claim again.</p>
+    <summary class="fa">/claim چیست و بهش نیاز دارم؟</summary>
+    <p class="fa">در مسیر پیش‌فرض به <code>/claim</code> نیاز نداری — بات با <code>ALLOWED_CHAT_ID</code> فقط برای توست. <code>/claim</code> مخصوص کاربران پیشرفته است که binding کی‌وی <code>OWNER_STORE</code> را دستی اضافه کنند (آن‌وقت اولین نفر صاحب بات می‌شود). اگر از آن استفاده نمی‌کنی، کاملاً نادیده بگیر.</p>
+    <p class="en">You don't need <code>/claim</code> in the default path — <code>ALLOWED_CHAT_ID</code> already locks the bot to you. <code>/claim</code> is for advanced users who add the <code>OWNER_STORE</code> KV binding manually (then the first sender owns the bot). If you don't use it, just ignore it.</p>
   </details>
 
   <details>

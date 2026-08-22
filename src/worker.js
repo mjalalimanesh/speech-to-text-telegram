@@ -4,28 +4,28 @@
  * Turns Telegram voice messages into text using the free Google AI Studio
  * (Gemini) API. Zero dependencies, no build step.
  *
- * Deploy it with the Deploy-to-Cloudflare button, with `wrangler deploy`,
- * or by copy-pasting this file into the Cloudflare dashboard editor.
+ * Deploy it with GitHub "Use this template" → "Deploy from existing repository"
+ * in Cloudflare, with the Deploy-to-Cloudflare button, or with `wrangler deploy`.
  *
  * Setup (webhook-based — instant replies):
- *   1. Set BOT_TOKEN + GEMINI_API_KEY (prompted by the Deploy button wizard).
+ *   1. Set BOT_TOKEN + GEMINI_API_KEY (prompted by the Cloudflare deploy wizard).
  *   2. After deploying, click "Visit" on your worker's page in Cloudflare —
  *      the webhook registers automatically (one time, takes one click).
- *   3. In Telegram, send /claim to your bot → it locks itself to you.
+ *   3. In Telegram, send any message to the bot — it replies with your chat ID.
+ *      Add it as ALLOWED_CHAT_ID (Settings → Variables and Secrets) to lock
+ *      the bot to yourself.
  *
  * Env / vars (Settings → Variables and Secrets):
  *   BOT_TOKEN         Telegram bot token from @BotFather (required)
  *   GEMINI_API_KEY    Free API key from https://aistudio.google.com/apikey (required)
+ *   ALLOWED_CHAT_ID   Comma-separated chat IDs allowed to use the bot (default path)
  *   PUBLIC_BOT        "true" to let anyone use the bot (optional)
  *   DAILY_LIMIT       Per-chat daily cap in public mode, default 20 (optional)
  *   GEMINI_MODEL      Model name, default gemini-2.5-flash-lite (optional)
- *   ALLOWED_CHAT_ID   Fallback access control when KV binding is unavailable
- *                     (comma-separated chat IDs). Ignored if OWNER_STORE exists.
  *
- * KV binding:
- *   OWNER_STORE       Stores the bot owner's chat ID (auto-provisioned by the
- *                     Deploy to Cloudflare button). Without it, the bot falls
- *                     back to ALLOWED_CHAT_ID.
+ * KV binding (optional, advanced):
+ *   OWNER_STORE       If present, the first /claim in Telegram stores the owner's
+ *                     chat ID here and ALLOWED_CHAT_ID is ignored.
  */
 
 const I18N = {
