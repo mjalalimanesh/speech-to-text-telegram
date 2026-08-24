@@ -50,7 +50,7 @@ A **free, self-deployable Telegram bot** that turns voice messages into text usi
 | `ALLOWED_CHAT_ID` | ✅ | Your chat ID — the only person allowed to use the bot (get it from @userinfobot; comma-separated for multiple) |
 | `PUBLIC_BOT` | – | Set to `true` to let anyone use your bot (uses your Gemini quota) |
 | `DAILY_LIMIT` | – | Per-chat daily cap in public mode (default `20`) |
-| `GEMINI_MODEL` | – | Default `gemini-3.5-flash-lite` — free-tier friendly |
+| `GEMINI_MODEL` | – | Default `gemini-3.5-flash` — free-tier friendly |
 | `OWNER_STORE` (KV binding) | – | Optional: enables `/claim` (first sender owns the bot). Requires manual KV setup |
 
 **Access model:**
@@ -63,7 +63,7 @@ A **free, self-deployable Telegram bot** that turns voice messages into text usi
 ## 🆓 Free limits (why this works forever)
 
 - **Cloudflare Workers free**: 100,000 requests/day, HTTPS + webhook included.
-- **Gemini free tier** (`gemini-3.5-flash-lite`): roughly 15 requests/minute and 1,000+ requests/day — plenty for personal use.
+- **Gemini free tier** (`gemini-3.5-flash`): roughly 15 requests/minute and 1,000+ requests/day — plenty for personal use.
 - Telegram voice notes are small (usually < 1 MB), so everything stays well within limits.
 
 ---

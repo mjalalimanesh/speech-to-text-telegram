@@ -23,7 +23,7 @@
  *   ALLOWED_CHAT_ID   Comma-separated chat IDs allowed to use the bot (default path)
  *   PUBLIC_BOT        "true" to let anyone use the bot (optional)
  *   DAILY_LIMIT       Per-chat daily cap in public mode, default 20 (optional)
- *   GEMINI_MODEL      Model name, default gemini-3.5-flash-lite (optional)
+ *   GEMINI_MODEL      Model name, default gemini-3.5-flash (optional)
  *
  * KV binding (optional, advanced):
  *   OWNER_STORE       If present, the first /claim in Telegram stores the owner's
@@ -284,7 +284,7 @@ async function transcribe(update, env, lang) {
 }
 
 async function transcribeWithGemini(bytes, mime, env) {
-  const model = env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
+  const model = env.GEMINI_MODEL || 'gemini-3.5-flash';
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${env.GEMINI_API_KEY}`,
     {
